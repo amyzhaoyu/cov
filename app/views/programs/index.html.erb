@@ -7,19 +7,33 @@ App.view = 'IndexProgram';
 App.viewparams = { el:$("#main") };
 </script>
 
+<script id="pgeTableTemplate" type="text/html">
+	<table class="table table-striped">
+		<tr><th>CMMI Programs</th></tr>
+		<% _.each(pgeList, function(p) { %>
+		<tr><td><a href="http://rd-dashboard.nitrd.gov/gapi/api/topic?org=CMMI,p"<%= p.nsf_pge %>"&year= 2007-2010">"p"<%= p.nsf_pge %>"-"<%= p.full_label %></a></td></tr>
+		<% }); %>
+	</table>
+</script>
+
 <div class="tabbable">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#1" data-toggle="tab">Program Dashboard</a></li>
 	</ul>
 	<div class="tab-pane active" id="1">
 		<script type-"text/Javascript">
+			// get a list of pges
 			$.getJSON("http://rd-dashboard.nitrd.gov/gapi/api/topic?org=CMMI&summ=pge&jsoncallback=?", function(data) {
 				var pges = _.pluck(data["data"], "pge").join();
+				// lookup using pge legend in the data api
 				$.getJSON("http://rd-dashboard.nitrd.gov/gapi/api/prop?legend=nsf_pge&q="+pges+"&jsoncallback=?", function(data){
-				console.log(_.pluck(data, "full_label"));
+					var pgeList = data;
+					var pgeTableTemplate = _.template($('#pgeTableTemplate').text());
+					var html = pgeTableTemplate({'pgeList' : pgeList});
+					$("#pge-list").html(html);
 				});
 			});
 		</script>
-		<table class="table table-striped"></table>
+		<div id="pge-list"></div>
 	</div>
 </div>
