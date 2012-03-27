@@ -5,15 +5,18 @@
 //var view = new App.Views.ListProposal({ el:$("#main")});
 App.view = 'IndexProgram';
 App.viewparams = { el:$("#main") };
+//_.templateSettings = {
+//      evaluate : /\{\[([\s\S]+?)\]\}/g,
+//      interpolate : /\{\{([\s\S]+?)\}\}/g
+//};
 </script>
 
 <script id="pgeTableTemplate" type="text/html">
 	<table class="table table-striped">
 		<tr><th>CMMI Programs</th></tr>
-		{[ for (var i = 0; i < pgeList.length; i++){ ]}
-		{[ var p = pgeList[i]; ]}
-		<tr><td><a href="http://rd-dashboard.nitrd.gov/gapi/api/topic?org=CMMI,p"{{ p.nsf_pge }}"&year= 2007-2010">"p"{{ p.nsf_pge }}"-"{{ p.full_label }}</a></td></tr>
-		{[ } ]}
+		{[ _.each(pgeList, function(p){ ]}
+		<tr><td><a href=http://rd-dashboard.nitrd.gov/gapi/api/topic?org=CMMI,p{{ p.nsf_pge }}&year=2007-2010>p{{ p.nsf_pge }}-{{ p.full_label }}</a></td></tr>
+		{[ }); ]}
 	</table>
 </script>
 
